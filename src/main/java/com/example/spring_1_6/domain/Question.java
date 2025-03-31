@@ -1,4 +1,4 @@
-package com.example.spring_1_5.domain;
+package com.example.spring_1_6.domain;
 
 
 import lombok.AllArgsConstructor;

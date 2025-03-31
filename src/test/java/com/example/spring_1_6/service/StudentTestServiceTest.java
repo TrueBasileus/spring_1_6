@@ -1,39 +1,39 @@
-package com.example.spring_1_5.service;
+package com.example.spring_1_6.service;
 
 
 
 
-import com.example.spring_1_5.domain.Answer;
-import com.example.spring_1_5.domain.Question;
-import com.example.spring_1_5.domain.QuestionBook;
+import com.example.spring_1_6.domain.Answer;
+import com.example.spring_1_6.domain.Question;
+import com.example.spring_1_6.domain.QuestionBook;
+import org.jline.reader.LineReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.profiles.active=test")
 public class StudentTestServiceTest {
 
-    @InjectMocks
+    @Autowired
     private StudentTestService service;
-    @Mock
+    @MockBean
     private MessageSource messageSource;
 
-    @Mock
+    @MockBean
     private QuestionBook questionBook;
+
+    @MockBean
+    private LineReader lineReader;
 
     @BeforeEach
     void setUp(){
@@ -48,14 +48,10 @@ public class StudentTestServiceTest {
         when(questionBook.getQuestions()).thenReturn(testQuestions);
         when(messageSource.getMessage("test.passed.message", null, Locale.getDefault()))
                 .thenReturn("Test passed");
-
-        InputStream originalIn = System.in;
-        System.setIn(new ByteArrayInputStream("Saint-Petersburg, Moscow".getBytes()));
+        when(lineReader.readLine()).thenReturn("Moscow, Saint-Petersburg");
         String result = service.test(questionBook);
 
         Assertions.assertEquals("Test passed", result);
-
-        System.setIn(originalIn);
     }
 
     @Test
@@ -66,13 +62,10 @@ public class StudentTestServiceTest {
         when(questionBook.getQuestions()).thenReturn(testQuestions);
         when(messageSource.getMessage("test.failed.message", null, Locale.getDefault()))
                 .thenReturn("Test failed");
+        when(lineReader.readLine()).thenReturn("Kazan, Saint-Petersburg");
 
-        InputStream originalIn = System.in;
-        System.setIn(new ByteArrayInputStream("Kazan, Saint-Petersburg".getBytes()));
         String result = service.test(questionBook);
 
         Assertions.assertEquals("Test failed", result);
-
-        System.setIn(originalIn);
     }
 }

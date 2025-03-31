@@ -1,6 +1,6 @@
 spring:
   application:
-    name: spring_1_5
+    name: spring_1_6
 answers:
   for:
     pass: 2

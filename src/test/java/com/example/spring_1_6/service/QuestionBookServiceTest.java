@@ -1,18 +1,13 @@
-package com.example.spring_1_5.service;
+package com.example.spring_1_6.service;
 
 
-import com.example.spring_1_5.domain.Question;
-import com.example.spring_1_5.service.QuestionBookService;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.spring_1_6.domain.Question;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Locale;
@@ -20,14 +15,15 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.profiles.active=test")
 public class QuestionBookServiceTest {
 
-    @Mock
-    private MessageSource messageSource;
 
-    @InjectMocks
+    @Autowired
     private QuestionBookService questionBookService;
+
+    @MockBean
+    private MessageSource messageSource;
 
 
     @Test
@@ -43,7 +39,7 @@ public class QuestionBookServiceTest {
         when(messageSource.getMessage("survey.answer2", null, Locale.getDefault()))
                 .thenReturn("Red,Green,Blue");
 
-        List<Question> questions = questionBookService.loadQuestions();
+        List<Question> questions = questionBookService.loadQuestions().getQuestions();
 
         assertEquals(2, questions.size());
 
