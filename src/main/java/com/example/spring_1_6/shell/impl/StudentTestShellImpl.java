@@ -12,6 +12,8 @@ import org.springframework.shell.standard.ShellMethod;
 public class StudentTestShellImpl implements StudentTestShell {
     private StudentTestService studentTestService;
     private QuestionBookService questionBookService;
+
+    @Override
     @ShellMethod(value = "Begin test", key = {"t", "test"})
     public String beginTest(){
         return studentTestService.test(questionBookService.getAllQuestions());

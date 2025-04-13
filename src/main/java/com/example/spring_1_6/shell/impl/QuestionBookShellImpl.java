@@ -12,6 +12,7 @@ import org.springframework.shell.standard.ShellMethod;
 public class QuestionBookShellImpl implements QuestionBookShell {
     private QuestionBookService questionBookService;
 
+    @Override
     @ShellMethod(value = "Show questions", key = {"q", "questions"})
     public String showQuestions(){
         return questionBookService.getAllQuestions().stream().map(Question::toString).reduce((q1, q2)-> q1 + "\n" + q2).orElse("There are no questions");
