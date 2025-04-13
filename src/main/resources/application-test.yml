@@ -2,3 +2,8 @@ spring:
   shell:
     interactive:
       enabled: false
+answers:
+  for:
+    pass: 2
+questions:
+  amount: 2

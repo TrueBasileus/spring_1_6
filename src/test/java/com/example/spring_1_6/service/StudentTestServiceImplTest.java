@@ -5,8 +5,7 @@ package com.example.spring_1_6.service;
 
 import com.example.spring_1_6.domain.Answer;
 import com.example.spring_1_6.domain.Question;
-import com.example.spring_1_6.domain.QuestionBook;
-import org.jline.reader.LineReader;
+import com.example.spring_1_6.service.impl.StudentTestServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,18 +21,15 @@ import java.util.Locale;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(properties = "spring.profiles.active=test")
-public class StudentTestServiceTest {
+public class StudentTestServiceImplTest {
 
     @Autowired
-    private StudentTestService service;
+    private StudentTestServiceImpl service;
     @MockBean
     private MessageSource messageSource;
-
     @MockBean
-    private QuestionBook questionBook;
+    private IOService ioService;
 
-    @MockBean
-    private LineReader lineReader;
 
     @BeforeEach
     void setUp(){
@@ -43,13 +39,18 @@ public class StudentTestServiceTest {
     @Test
     public void testWithCorrectAnswers(){
         List<Question> testQuestions = new ArrayList<>();
+        String studentName = "Ivan Ivanov";
+        String answers = "Saint-Petersburg, Moscow";
+
         testQuestions.add(new Question("The 2 most populated cities in Russia", List.of(new Answer("Moscow"), new Answer("Saint-Petersburg"))));
 
-        when(questionBook.getQuestions()).thenReturn(testQuestions);
         when(messageSource.getMessage("test.passed.message", null, Locale.getDefault()))
                 .thenReturn("Test passed");
-        when(lineReader.readLine()).thenReturn("Moscow, Saint-Petersburg");
-        String result = service.test(questionBook);
+        when(ioService.readString())
+                .thenReturn(studentName)
+                .thenReturn(answers);
+
+        String result = service.test(testQuestions);
 
         Assertions.assertEquals("Test passed", result);
     }
@@ -57,14 +58,19 @@ public class StudentTestServiceTest {
     @Test
     public void testWithIncorrectAnswers(){
         List<Question> testQuestions = new ArrayList<>();
+        String studentName = "Ivan Ivanov";
+        String answers = "Saint-Petersburg, Kazan";
+
         testQuestions.add(new Question("The 2 most populated cities in Russia", List.of(new Answer("Moscow"), new Answer("Saint-Petersburg"))));
 
-        when(questionBook.getQuestions()).thenReturn(testQuestions);
         when(messageSource.getMessage("test.failed.message", null, Locale.getDefault()))
                 .thenReturn("Test failed");
-        when(lineReader.readLine()).thenReturn("Kazan, Saint-Petersburg");
+        when(ioService.readString())
+                .thenReturn(studentName)
+                .thenReturn(answers);
 
-        String result = service.test(questionBook);
+
+        String result = service.test(testQuestions);
 
         Assertions.assertEquals("Test failed", result);
     }

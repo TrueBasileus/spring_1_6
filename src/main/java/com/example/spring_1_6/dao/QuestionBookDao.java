@@ -1,10 +1,10 @@
-package com.example.spring_1_6.service;
+package com.example.spring_1_6.dao;
 
 import com.example.spring_1_6.domain.Question;
 
 import java.util.List;
 
-public interface QuestionBookService {
+public interface QuestionBookDao {
+
     List<Question> getAllQuestions();
-    void printAllQuestions();
 }

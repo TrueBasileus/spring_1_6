@@ -4,3 +4,5 @@ spring:
 answers:
   for:
     pass: 2
+questions:
+  amount: 2
