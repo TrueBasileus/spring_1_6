@@ -2,8 +2,10 @@ spring:
   shell:
     interactive:
       enabled: false
+app:
+  default-locale: en
+  questions-basename: questions-test
+
 answers:
   for:
     pass: 2
-questions:
-  amount: 2

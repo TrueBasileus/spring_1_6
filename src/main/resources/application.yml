@@ -1,8 +1,12 @@
 spring:
   application:
     name: spring_1_6
+  messages:
+   encoding: UTF-8
+   basename: i18n/messages
+app:
+  default-locale: en
+  questions-basename: questions
 answers:
   for:
     pass: 2
-questions:
-  amount: 2

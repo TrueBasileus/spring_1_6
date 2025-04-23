@@ -6,40 +6,22 @@ import com.example.spring_1_6.domain.Question;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.MessageSource;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 
-@SpringBootTest(properties = "spring.profiles.active=test")
+@SpringBootTest
 @TestPropertySource(properties = {
-        "questions.amount=2"
-        })
+        "questions.amount=2", "spring.profiles.active=test"
+})
 public class QuestionBookDaoImplTest {
-
-    @MockBean
-    private MessageSource messageSource;
-
     @Autowired
     private QuestionBookDaoImpl questionBookDaoImpl;
 
-
     @Test
     public void testLoadQuestions() {
-        when(messageSource.getMessage(eq("survey.question1"), any(), any()))
-                .thenReturn("What is your name?");
-        when(messageSource.getMessage(eq("survey.answer1"), any(), any()))
-                .thenReturn("Alice,Bob,Charlie");
-        when(messageSource.getMessage(eq("survey.question2"), any(), any()))
-                .thenReturn("What is your favorite color?");
-        when(messageSource.getMessage(eq("survey.answer2"), any(), any()))
-                .thenReturn("Red,Green,Blue");
 
         List<Question> questions = questionBookDaoImpl.getAllQuestions();
 
