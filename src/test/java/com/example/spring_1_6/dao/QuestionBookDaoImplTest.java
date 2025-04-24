@@ -6,15 +6,12 @@ import com.example.spring_1_6.domain.Question;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-@TestPropertySource(properties = {
-        "questions.amount=2", "spring.profiles.active=test"
+@SpringBootTest(properties = { "spring.profiles.active=test"
 })
 public class QuestionBookDaoImplTest {
     @Autowired
